@@ -1,0 +1,29 @@
+version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:latest
+
+jobs:
+  build:
+    executor: node-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Run Tests
+          command: npm test
+      - run:
+          name: Generate Coverage Report
+          command: npm run code- coverage  
+      - store_artifacts:
+          path: /home/mike/Downloads/test-results  # Replace with the path to your test results
+          destination: test-results
+      - store_artifacts:
+          path: /home/mike/Downloads/coverage-report  # Replace with the path to your coverage report
+          destination: coverage-report
+
+
