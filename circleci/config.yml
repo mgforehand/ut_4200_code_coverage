@@ -20,10 +20,10 @@ jobs:
           name: Generate Coverage Report
           command: npm run code- coverage  
       - store_artifacts:
-          path: /home/mike/Downloads/test-results  # Replace with the path to your test results
+          path: /home/mike/Downloads/test-results  
           destination: test-results
       - store_artifacts:
-          path: /home/mike/Downloads/coverage-report  # Replace with the path to your coverage report
+          path: /home/mike/Downloads/coverage-report  
           destination: coverage-report
 
 
