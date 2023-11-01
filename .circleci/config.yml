@@ -18,7 +18,7 @@ jobs:
           command: npm test
       - run:
           name: Generate Coverage Report
-          command: npm run coverage-code
+          command: npm run code-coverage
       - store_artifacts:
           path: test-results
           destination: test-results
