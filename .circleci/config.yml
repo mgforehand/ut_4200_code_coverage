@@ -1,5 +1,7 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.1
 executors:
   node-executor:
     docker:
@@ -28,6 +30,10 @@ jobs:
       - store_artifacts:
           path: coverage
           destination: coverage-report
+      - slack/notify:
+          message: "This is Mike Forehand submitting the slack assignment"
+          channel: "#general"
+          token: ${SLACK_OAUTH_TOKEN}
 
   build-dummy-artifacts:
     executor: python-executor
