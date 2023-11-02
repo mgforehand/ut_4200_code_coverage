@@ -79,12 +79,25 @@ jobs:
           command: |
             curl -H "Circleci-Token: $CIRCLECI_TOKEN" \
                  https://circleci.com/api/v1.1/project/github/mgforehand/ut_4200_code_coverage/1.0.207522-d583bc78/artifacts > artifacts.json
+      - run: 
+          name: Check Artifact JSON
+          command: |
+            if jq empty artifact.json; then
+              echo "JSON is valid"
+            else
+              echo "Invalid JSON, exiting"
+              exit 1
+            fi
       - run:
           name: Upload Artifacts
           command: |
-            for artifact in $(cat artifacts.json | jq -r '.[].url'); do
-              curl -o artifact_file "$(echo $artifact | sed 's/your_circleci_api_token/$CIRCLECI_TOKEN/')" 
-              curl -X POST -F file=@artifact_file https://4200.gator.utahtech.rocks/upload_endpoint
+            for artifact in $(jq -r '.[].url'); do
+              if [ -n "$artifact" ]; then 
+                curl -o artifact_file "$(echo $artifact | sed 's/your_circleci_api_token/$CIRCLECI_TOKEN/')" 
+                curl -X POST -F file=@artifact_file https://4200.gator.utahtech.rocks/upload_endpoint
+              else
+                echo "Artifact URL is empty"
+              fi
             done
 
 workflows:
