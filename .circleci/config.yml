@@ -33,7 +33,7 @@ jobs:
                 }
               ]
             }
-          event: always
+          event: approval_required
 
   build-nodejs:
     executor: node-executor
