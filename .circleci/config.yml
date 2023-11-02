@@ -47,7 +47,7 @@ jobs:
       - slack/notify:
           message: "This is Mike Forehand submitting the slack assignment"
           channel: "#general"
-          temolate: custom
+          template: custom
  
 
   build-dummy-artifacts:
