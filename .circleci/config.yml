@@ -34,7 +34,7 @@ jobs:
       - slack/notify:
           message: "This is Mike Forehand submitting the slack assignment"
           channel: "#general"
-          token: ${SLACK_OAUTH_TOKEN}
+ 
 
   build-dummy-artifacts:
     executor: python-executor
