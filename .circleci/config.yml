@@ -1,20 +1,34 @@
 version: 2.1
-
 orbs:
-  slack: circleci/slack@4.1
-  slack_defaults:
-    custom: |
-      {
-        "blocks": [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "This is Mike Forehand submitting the slack assignment"
+  slack: circleci/slack@4.12.5
+jobs:
+  notify:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is Mike Forehand submitting the slack assignment*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
             }
-          }
-        ]
-      }
+          event: always
+workflows:
+  send-notification:
+    jobs:
+      - notify:
+          context: slack-secrets
+
   
 executors:
   node-executor:
@@ -44,11 +58,7 @@ jobs:
       - store_artifacts:
           path: coverage
           destination: coverage-report
-      - slack/notify:
-          channel: "#general"
-          template: custom
- 
-
+     
   build-dummy-artifacts:
     executor: python-executor
     working_directory: /tmp
