@@ -2,6 +2,19 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@4.1
+  slack_defaults:
+    custom: |
+      {
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "This is Mike Forehand submitting the slack assignment"
+            }
+          }
+        ]
+      }
   
 executors:
   node-executor:
@@ -34,6 +47,7 @@ jobs:
       - slack/notify:
           message: "This is Mike Forehand submitting the slack assignment"
           channel: "#general"
+          temolate: custom
  
 
   build-dummy-artifacts:
