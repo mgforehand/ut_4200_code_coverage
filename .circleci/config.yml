@@ -1,6 +1,16 @@
 version: 2.1
+
 orbs:
   slack: circleci/slack@4.12.5
+
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:latest
+  python-executor:
+    docker:
+      - image: circleci/python:3.8
+
 jobs:
   notify:
     docker:
@@ -23,22 +33,7 @@ jobs:
               ]
             }
           event: always
-workflows:
-  send-notification:
-    jobs:
-      - notify:
-          context: slack-secrets
 
-  
-executors:
-  node-executor:
-    docker:
-      - image: circleci/node:latest
-  python-executor:
-    docker:
-      - image: circleci/python:3.8
-
-jobs:
   build-nodejs:
     executor: node-executor
     steps:
@@ -58,7 +53,7 @@ jobs:
       - store_artifacts:
           path: coverage
           destination: coverage-report
-     
+
   build-dummy-artifacts:
     executor: python-executor
     working_directory: /tmp
@@ -74,9 +69,9 @@ jobs:
           destination: artifact-file
       - store_artifacts:
           path: /tmp/artifacts
-  
+
   fetch-artifacts:
-    executor: python-executor  # Example: Using the same executor as 'build-dummy-artifacts'
+    executor: python-executor
     steps:
       - run:
           name: Fetch Artifacts
@@ -91,10 +86,12 @@ jobs:
               curl -X POST -F file=@artifact_file https://4200.gator.utahtech.rocks/upload_endpoint
             done
 
-
-
 workflows:
   version: 2
+  send-notification:
+    jobs:
+      - notify:
+          context: slack-secrets
   build-deploy:
     jobs:
       - build-nodejs
