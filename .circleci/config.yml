@@ -45,7 +45,6 @@ jobs:
           path: coverage
           destination: coverage-report
       - slack/notify:
-          message: "This is Mike Forehand submitting the slack assignment"
           channel: "#general"
           template: custom
  
